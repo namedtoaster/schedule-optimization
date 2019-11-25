@@ -1,0 +1,24 @@
+--- Job new1.gms Start 11/24/19 14:09:58 29.1.0 rbb4180b WEX-WEI x86 64bit/MS Windows
+--- GAMS Parameters defined
+    Input Z:\computer\programming\GAMSStudio\workspace\new1.gms
+    PageSize 0
+    ScrDir Z:\computer\programming\GAMSStudio\workspace\225a\
+    SysDir C:\GAMS\win64\29.1\
+    LogOption 3
+    ErrMsg 1
+    ErrorLog 99
+    IDE 1
+    LstTitleLeftAligned 1
+GAMS 29.1.0   Copyright (C) 1987-2019 GAMS Development. All rights reserved
+Licensee: GAMS Development Corporation, USA              G871201/0000CA-ANY
+          Free Demo, +1 202-342-0180, support@gams.com, www.gams.com DC0000
+--- Starting compilation
+--- new1.gms(42) 3 Mb 2 Errors
+*** Error 243 in Z:\computer\programming\GAMSStudio\workspace\new1.gms
+    Objective is not a variable
+*** Error 257 in Z:\computer\programming\GAMSStudio\workspace\new1.gms
+    Solve statement not checked because of previous errors
+--- new1.gms(42) 3 Mb 2 Errors
+*** Status: Compilation error(s)
+--- Job new1.gms Stop 11/24/19 14:09:58 elapsed 0:00:00.097
+

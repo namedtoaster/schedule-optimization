@@ -1,0 +1,22 @@
+--- Job new2.gms Start 11/24/19 14:54:55 29.1.0 rbb4180b WEX-WEI x86 64bit/MS Windows
+--- GAMS Parameters defined
+    Input Z:\computer\programming\GAMSStudio\workspace\new2.gms
+    PageSize 0
+    ScrDir Z:\computer\programming\GAMSStudio\workspace\225a\
+    SysDir C:\GAMS\win64\29.1\
+    LogOption 3
+    ErrMsg 1
+    ErrorLog 99
+    IDE 1
+    LstTitleLeftAligned 1
+GAMS 29.1.0   Copyright (C) 1987-2019 GAMS Development. All rights reserved
+Licensee: GAMS Development Corporation, USA              G871201/0000CA-ANY
+          Free Demo, +1 202-342-0180, support@gams.com, www.gams.com DC0000
+--- Starting compilation
+--- new2.gms(105) 3 Mb 1 Error
+*** Error 120 in Z:\computer\programming\GAMSStudio\workspace\new2.gms
+    Unknown identifier entered as set
+--- new2.gms(125) 3 Mb 1 Error
+*** Status: Compilation error(s)
+--- Job new2.gms Stop 11/24/19 14:54:55 elapsed 0:00:00.069
+
