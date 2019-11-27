@@ -1,0 +1,149 @@
+GAMS 29.1.0  rbb4180b Released Nov 15, 2019 WEX-WEI x86 64bit/MS Windows - 11/24/19 14:55:13 Page 1
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+C o m p i l a t i o n
+
+
+   1  * Notes
+   2  * Only one student/instructor (UP/IP) per event. Need to implement crews
+   3  Sets
+   4      e       events              / TR-1, TR-2, BSA-1, BSA-2, SAT-1, SAT-2, ISR-1, ISR-2, SCAR-1, CSAR-1, CAS-1, CAS-2 /
+   5      ip      instructor pilots   / Capt-Campbell, Capt-Ward, Capt-Barron, Capt-Ray, Capt-Yama /
+   6      iso     instructor SOs      / MSgt-Nelson, SSgt-Brant, TSgt-Bianco, MSgt-Zimmerman, MSgt-Yerke /
+   7      up      student pilots      / Lt-Chambers, Lt-Vaughn, Lt-Solano, Lt-Pineiro, Lt-Avignano /
+   8      d       days                / 1, 2, 3, 4, 5 /
+   9  * For now, only 20 periods; 4 periods for each day (5 days) and only one line
+  10      p       periods             / P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15, P16, P17, P18, P19, P20 /
+  11   
+  12      D1p(p)     periods in day 1    / P1, P2, P3, P4 /
+  13      D2p(p)     periods in day 2    / P5, P6, P7, P8 /
+  14      D3p(p)     periods in day 3    / P9, P10, P11, P12 /
+  15      D4p(p)     periods in day 4    / P13, P14, P15, P16 /
+  16      D5p(p)     periods in day 5    / P17, P18, P19, P20 /
+  17   
+  18      TR1ips(ip)  IPs who can instruct TR1    / Capt-Campbell, Capt-Ward, Capt-Barron /
+  19      TR2ips(ip)  IPs who can instruct TR2    / Capt-Campbell, Capt-Ward, Capt-Barron /
+  20      BSA1ips(ip) IPs who can instruct BSA1   / Capt-Campbell, Capt-Ward, Capt-Barron /
+  21      BSA2ips(ip) IPs who can instruct BSA2   / Capt-Campbell, Capt-Ward, Capt-Barron /
+  22      SAT1ips(ip) IPs who can instruct SAT1   / Capt-Campbell, Capt-Ward, Capt-Barron /
+  23      SAT2ips(ip) IPs who can instruct SAT2   / Capt-Campbell, Capt-Ward, Capt-Barron /
+  24      ISR1ips(ip) IPs who can instruct ISR1   / Capt-Campbell, Capt-Ward, Capt-Barron, Capt-Ray, Capt-Yama /
+  25      ISR2ips(ip) IPs who can instruct ISR2   / Capt-Campbell, Capt-Ward, Capt-Barron, Capt-Ray, Capt-Yama /
+  26      SCAR1ips(ip) IPs who can instruct SCAR1 / Capt-Campbell, Capt-Ward, Capt-Barron, Capt-Ray, Capt-Yama /
+  27      CSAR1ips(ip) IPs who can instruct CSAR1 / Capt-Campbell, Capt-Ward, Capt-Barron, Capt-Ray, Capt-Yama /
+  28      CAS1ips(ip) IPs who can instruct CAS1   / Capt-Campbell, Capt-Ward, Capt-Barron, Capt-Ray, Capt-Yama /
+  29      CAS2ips(ip) IPs who can instruct CAS2   / Capt-Campbell, Capt-Ward, Capt-Barron, Capt-Ray, Capt-Yama /
+  30   
+  31      TR1isos(iso)  ISOs who can instruct TR1    / MSgt-Nelson, SSgt-Brant, TSgt-Bianco /
+  32      TR2isos(iso)  ISOs who can instruct TR2    / MSgt-Nelson, SSgt-Brant, TSgt-Bianco /
+  33      BSA1isos(iso) ISOs who can instruct BSA1   / MSgt-Nelson, SSgt-Brant, TSgt-Bianco /
+  34      BSA2isos(iso) ISOs who can instruct BSA2   / MSgt-Nelson, SSgt-Brant, TSgt-Bianco /
+  35      SAT1isos(iso) ISOs who can instruct SAT1   / MSgt-Nelson, SSgt-Brant, TSgt-Bianco /
+  36      SAT2isos(iso) ISOs who can instruct SAT2   / MSgt-Nelson, SSgt-Brant, TSgt-Bianco /
+  37      ISR1isos(iso) ISOs who can instruct ISR1   / MSgt-Nelson, SSgt-Brant, TSgt-Bianco, MSgt-Zimmerman, MSgt-Yerke /
+  38      ISR2isos(iso) ISOs who can instruct ISR2   / MSgt-Nelson, SSgt-Brant, TSgt-Bianco, MSgt-Zimmerman, MSgt-Yerke /
+  39      SCAR1isos(iso) ISOs who can instruct SCAR1 / MSgt-Nelson, SSgt-Brant, TSgt-Bianco, MSgt-Zimmerman, MSgt-Yerke /
+  40      CSAR1isos(iso) ISOs who can instruct CSAR1 / MSgt-Nelson, SSgt-Brant, TSgt-Bianco, MSgt-Zimmerman, MSgt-Yerke /
+  41      CAS1isos(iso) ISOs who can instruct CAS1   / MSgt-Nelson, SSgt-Brant, TSgt-Bianco, MSgt-Zimmerman, MSgt-Yerke /
+  42      CAS2isos(iso) ISOs who can instruct CAS2   / MSgt-Nelson, SSgt-Brant, TSgt-Bianco, MSgt-Zimmerman, MSgt-Yerke /
+  43   
+  44  * Lt-Chambers, Lt-Vaughn, Lt-Solano, Lt-Pineiro, Lt-Avignano
+  45      ChambersFirst(e) First event for Chambers  / TR-1 /
+  46      VaughnFirst(e)  First event for Vaughn      / TR-1 /
+  47      SolanoFirst(e)  First event for Solano      / SAT-1 /
+  48      PineiroFirst(e) First event for Pineiro     / SCAR-1 /
+  49      AvignanoFirst(e) First event for Avignano   / SCAR-1 /;
+  50   
+  51  Table IPe(ip, e) IPs who can instruct event e
+  52                          TR-1    TR-2    BSA-1   BSA-2   SAT-1   SAT-2   ISR-1   ISR-2   SCAR-1  CSAR-1  CAS-1   CAS-2
+  53      Capt-Campbell       1       1       1       1       1       1       1       1       1       1       1       1
+  54      Capt-Ward           1       1       1       1       1       1       1       1       1       1       1       1
+  55      Capt-Barron         1       1       1       1       1       1       1       1       1       1       1       1
+  56      Capt-Ray                                                            1       1       1       1       1       1
+  57      Capt-Yama                                                           1       1       1       1       1       1;
+  58   
+  59  Parameters
+  60         v(e)  value for a student completing event e
+  61          /   TR-1            1
+  62              TR-2            1
+  63              BSA-1           2
+  64              BSA-2           2
+  65              SAT-1           3
+  66              SAT-2           3
+  67              ISR-1           4
+  68              ISR-2           4
+  69              SCAR-1          5
+  70              CSAR-1          6
+  71              CAS-1           7
+  72              CAS-2           8   /
+  73   
+  74          dp(p)    day in which period occurs
+  75          /   P1  1
+  76              P2  1
+  77              P3  1
+  78              P4  1
+  79              P5  2
+  80              P6  2
+  81              P7  2
+  82              P8  2
+  83              P9  3
+  84              P10 3
+  85              P11 3
+  86              P12 3
+  87              P13 4
+  88              P14 4
+  89              P15 4
+  90              P16 4
+  91              P17 5
+  92              P18 5
+  93              P19 5
+  94              P20 5   /;
+  95   
+  96  Variables
+  97      Rep     reward
+  98      Xsep    scheduled variable
+  99      z       sum of rewards;
+ 100   
+ 101  Equations
+ 102  * just the definitions of the equations
+ 103  * semicolon goes at the end of the last definition
+ 104       reward(e, p)   reward to have a student in event e in period p
+ 105       schedule(up, e, p) 1 if student s is scheduled for event e in period p;
+ 106   
+ 107  * equations
+ 108  * semicolon goes at the end of every equation
+ 109  reward(e, p) ..    Rep =e= v(e) / sqrt(dp(p));
+ 110   
+ 111   
+ 112   
+ 113   
+ 114  * Example subsets
+ 115  * subitem1 has pen and pencil when declared, then adds ink and lipstick to it
+ 116  * subitem2 has everything in item then gets perfume removed from it
+ 117  *Set  item            "all items"              / dish, ink, lipstick, pen, pencil, perfume /
+ 118  *     subitem1(item)  "first subset of item"   / pen, pencil /
+ 119  *     subitem2(item)  "second subset of item";
+ 120   
+ 121  *subitem1('ink')      = yes ;
+ 122  *subitem1('lipstick') = yes ;
+ 123  *subitem2(item)       = yes  ;
+ 124  *subitem2('perfume')  = no ;
+ 125  *display subitem1, subitem2;
+
+
+COMPILATION TIME     =        0.016 SECONDS      3 MB  29.1.0 rbb4180b WEX-WEI
+GAMS 29.1.0  rbb4180b Released Nov 15, 2019 WEX-WEI x86 64bit/MS Windows - 11/24/19 14:55:13 Page 2
+G e n e r a l   A l g e b r a i c   M o d e l i n g   S y s t e m
+E x e c u t i o n
+
+
+EXECUTION TIME       =        0.000 SECONDS      3 MB  29.1.0 rbb4180b WEX-WEI
+
+
+USER: GAMS Development Corporation, USA              G871201/0000CA-ANY
+      Free Demo, +1 202-342-0180, support@gams.com, www.gams.com DC0000
+
+
+**** FILE SUMMARY
+
+Input      Z:\computer\programming\GAMSStudio\workspace\new2.gms
+Output     Z:\computer\programming\GAMSStudio\workspace\new2.lst
