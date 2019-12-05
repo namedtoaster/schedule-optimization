@@ -1,0 +1,9 @@
+function [x,cost] = optimizeAll(filename)
+studTable = readtable(filename, 'Sheet', 'Students');
+rewardTable = readtable(filename, 'Sheet', 'Reward');
+requirements = xlsread(filename, 3);
+[f,A,b,staffNumberVector] = makeMILPMatricesStuds(studTable,rewardTable,requirements);
+nVars=numel(f);
+lb = zeros(nVars,1);
+ub = ones(nVars,1);
+[x,cost] = intlinprog(-f,1:nVars,A,b,[],[],lb,ub);

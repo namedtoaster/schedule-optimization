@@ -1,7 +1,8 @@
 function [x,cost] = optimizeAll(filename)
-staffTable = readtable(filename);
+staffTable = readtable(filename)
+studTable = readtable(filename, 'Sheet', 'Students');
 requirements = xlsread(filename, 3);
-[f,A,b,staffNumberVector] = makeMILPMatrices(staffTable,requirements);
+[f,A,b,staffNumberVector] = makeMILPMatrices(staffTable,strequirements);
 nVars=numel(f);
 lb = zeros(nVars,1);
 ub = ones(nVars,1);

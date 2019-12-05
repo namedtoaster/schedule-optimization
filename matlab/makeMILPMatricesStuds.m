@@ -1,10 +1,10 @@
-function [f,A,b,staffNumberVector] = makeMILPMatrices(staffTable,requirements)
+function [f,A,b,staffNumberVector] = makeMILPMatrices(studTable,rewardTable,requirements)
 % Convert the staff information and requirements into the necessary
 % matrices for input to INTLINPROG
 
 % _Copyright 2015 The MathWorks, Inc._
 
-numStaff = size(staffTable,1); % Total number of staff available
+numStuds = size(studTable,1);
 
 % Initialize various variables
 totalHourMatrix = [];
@@ -12,12 +12,12 @@ staffNumberVector = [];
 staffNumberEntryCount = [];
 f = []; % Cost vector for linear programming
 
-for n = 1:numStaff % For each staff...
-    minHours = staffTable.MinHours(n);
-    maxHours = staffTable.MaxHours(n);
-    hourMatrix = [];
+for n = 1:numStuds % For each staff...
+     minHours = studTable.MinHours(n);
+     maxHours = studTable.MaxHours(n);
+     hourMatrix = [];
     
-    for hours = minHours:maxHours % ...generate all possible work hours
+     for hours = minHours:maxHours % ...generate all possible work hours
         % the second parameter of zeros() needs to be changeable depending
         % on the number of rides on a line
         hourVector = zeros(1,5);
@@ -56,8 +56,14 @@ for n = 1:numStaff % For each staff...
     staffNumberEntryCount(n) = size(hourMatrix,2);
     staffNumberVector = [staffNumberVector repmat(n,1,staffNumberEntryCount(n))];
     
-    % Wages are total hours worked * hourly wage
-    f = [f sum(hourMatrix)*staffTable.HourlyWage(n)];
+    % Maximize the reward for a student accomplishing a ride that has more
+    % value
+    
+    % Find reward for doing each event student can do
+    nextEvent = studTable.NextEvent(n);
+    rwd = rewardTable(strcmp(rewardTable.Event, nextEvent), :);
+    rwd = rwd.ValueForCompleting;
+    f = [f sum(hourMatrix)*rwd];
 end
 
 % Constraint: The total hours must be >= the minimum required
@@ -69,9 +75,10 @@ b_hours = requirements(2,:)';
 % In our case, we don't count hours, we go by time slots. For now at least
 A_oneTime = arrayfun(@(n)ones(1,n), staffNumberEntryCount,'Uniform',false);
 A_oneTime = blkdiag(A_oneTime{:});
-b_oneTime = ones(numStaff,1);
+b_oneTime = ones(numStuds,1);
 
 %% 3. Combine both of the constraints into one A and b matrix
 % We apply a (-) to the Hours constraint because Ax >= b means -Ax <= -b
 A = [-A_hours; A_oneTime];
 b = [-b_hours; b_oneTime];
+%A;
