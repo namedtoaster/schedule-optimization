@@ -63,11 +63,12 @@ b_hours = requirements(2,:)';
 
 
 % Constraint: You can only go to work once a day
-A_oneTime = arrayfun(@(n)ones(1,n), staffNumberEntryCount,'Uniform',false);
-A_oneTime = blkdiag(A_oneTime{:});
-b_oneTime = ones(numStaff,1);
+% In our case, we don't count hours, we go by time slots. For now at least
+%A_oneTime = arrayfun(@(n)ones(1,n), staffNumberEntryCount,'Uniform',false);
+%A_oneTime = blkdiag(A_oneTime{:});
+%b_oneTime = ones(numStaff,1);
 
 %% 3. Combine both of the constraints into one A and b matrix
 % We apply a (-) to the Hours constraint because Ax >= b means -Ax <= -b
-A = [-A_hours; A_oneTime];
-b = [-b_hours; b_oneTime];
+A = [-A_hours];%; A_oneTime];
+b = [-b_hours];%; b_oneTime];
