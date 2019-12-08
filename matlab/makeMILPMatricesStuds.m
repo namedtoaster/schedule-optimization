@@ -1,4 +1,4 @@
-function [f,A,b,staffNumberVector] = makeMILPMatrices(studTable,rewardTable,requirements)
+function [f,A,b,Aeq,beq,staffNumberVector] = makeMILPMatrices(studTable,rewardTable,requirements)
 % Convert the staff information and requirements into the necessary
 % matrices for input to INTLINPROG
 
@@ -63,12 +63,15 @@ for n = 1:numStuds % For each staff...
     nextEvent = studTable.NextEvent(n);
     rwd = rewardTable(strcmp(rewardTable.Event, nextEvent), :);
     rwd = rwd.ValueForCompleting;
-    f = [f sum(hourMatrix)*rwd];
+    f = [f ((size(hourMatrix,2)):-1:1)*(rwd)];
 end
 
 % Constraint: The total hours must be >= the minimum required
 A_hours = totalHourMatrix;
 b_hours = requirements(2,:)';
+% Since there may not be enough employees to work all shifts, set the last
+% shift to 0 (since the program should prioritize earlier shifts)
+b_hours(numStuds+1:size(b_hours,1))=0;
 
 
 % Constraint: You can only go to work once a day
@@ -79,6 +82,7 @@ b_oneTime = ones(numStuds,1);
 
 %% 3. Combine both of the constraints into one A and b matrix
 % We apply a (-) to the Hours constraint because Ax >= b means -Ax <= -b
-A = [-A_hours; A_oneTime];
-b = [-b_hours; b_oneTime];
-%A;
+Aeq = A_hours;%[-A_hours; A_oneTime];
+beq = b_hours;%[-b_hours; b_oneTime];
+A = A_oneTime;
+b = b_oneTime;

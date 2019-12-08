@@ -10,10 +10,8 @@ hoursMatrix = zeros(numStud,5); % second parameter is # of rides for this line
 
 % 1 to number of elements in the selected matrix
 for n = 1:numel(selected);
-    % thisEntry is the index of the selected shift option that satisfies the
-    % optimization
+    % thisEntry is the shift option
     thisEntry =selected(n);
-    % thisStaff picks which employee number the shift option applies to
     thisStaff = staffNumberVector(thisEntry);
     % Rows 1 throughh 5 of the thisEntry'th column from the negated A
     % matrix

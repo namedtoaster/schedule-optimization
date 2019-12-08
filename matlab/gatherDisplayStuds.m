@@ -1,4 +1,4 @@
-numStud = size(staffTable,1); % Total number of staff available
+numStud = size(studTable,1); % Total number of staff available
 
 % Convert from indices in x to employee and shift information
 selected = find(x);
