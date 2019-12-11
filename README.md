@@ -7,12 +7,12 @@
  
  Finally, run these commands
  
-studTable = readtable(filename, 'Sheet', 'Students');
-rewardTable = readtable(filename, 'Sheet', 'Reward');
-requirements = xlsread(filename, 3);
-[f,A,b,Aeq,beq,staffNumberVector] = makeMILPMatricesStuds(studTable,rewardTable,requirements);
-nVars=numel(f);
-lb = zeros(nVars,1);
-ub = ones(nVars,1);
-[x,cost] = intlinprog(-f,1:nVars,A,b,Aeq,beq,lb,ub);
-gatherDisplayStuds;
+studTable = readtable(filename, 'Sheet', 'Students');<br />
+rewardTable = readtable(filename, 'Sheet', 'Reward');<br />
+requirements = xlsread(filename, 3);<br />
+[f,A,b,Aeq,beq,staffNumberVector] = makeMILPMatricesStuds(studTable,rewardTable,requirements);<br />
+nVars=numel(f);<br />
+lb = zeros(nVars,1);<br />
+ub = ones(nVars,1);<br />
+[x,cost] = intlinprog(-f,1:nVars,A,b,Aeq,beq,lb,ub);<br />
+gatherDisplayStuds;<br />
