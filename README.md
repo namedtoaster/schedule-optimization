@@ -16,3 +16,5 @@ lb = zeros(nVars,1);<br />
 ub = ones(nVars,1);<br />
 [x,cost] = intlinprog(-f,1:nVars,A,b,Aeq,beq,lb,ub);<br />
 gatherDisplayStuds;<br />
+
+For any questions please contact [Dave Campbell](mailto:d0camp03@louisville.edu) or [Thomas Constantino](mailto:thomas.constantino@louisville.edu)
